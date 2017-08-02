@@ -1,5 +1,5 @@
 <!doctype html>
-<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
 <title>FileAPI Test: Creating Blob URL with Blob</title>
 <link rel="author" title="Victor Costan" href="mailto:pwnall@chromium.org">
 <link rel="help" href="https://w3c.github.io/FileAPI/#originOfBlobURL">
@@ -25,8 +25,8 @@ window.onload = () => {
   const blob = new Blob(['Hello world!']);
   const blobUrl = URL.createObjectURL(blob);
 
-  fetch(blobUrl).then(response => response.text()).then(text => {
-    window.parent.postMessage({ blobUrl, text }, '*');
+  fetch(blobUrl).then(response => response.text()).then(function(text) {
+    return window.parent.postMessage({ blobUrl, text }, '*');
   });
 };
 // The script tag is closed in readBlobFromUrl().
@@ -39,8 +39,8 @@ window.onload = () => {
 // Returns a promise resolved with an object with properties blobUrl and text
 // (the text read back from the Blob URL).
 function readBlobFromUrl(t, iframeSelector) {
-  return new Promise((resolve, reject) => {
-    window.onmessage = t.step_func((message) => { resolve(message.data); });
+  return new Promise(function(resolve, reject) {
+    window.onmessage = t.step_func(function(message) { return resolve(message.data); });
 
     const frame = document.querySelector(iframeSelector);
     const html = document.querySelector('#iframe-srcdoc').textContent +
@@ -49,18 +49,22 @@ function readBlobFromUrl(t, iframeSelector) {
   });
 }
 
-promise_test(t => readBlobFromUrl(t, '#unconstrained-iframe').then(data => {
-  assert_true(data.blobUrl.startsWith('blob:'),
-      "The Blob's URL should use the blob: scheme");
-  assert_equals(data.text, 'Hello world!',
+promise_test(function(t) {
+    return readBlobFromUrl(t, '#unconstrained-iframe').then(function(data) {
+      assert_true(data.blobUrl.startsWith('blob:'),
+          "The Blob's URL should use the blob: scheme");
+      assert_equals(data.text, 'Hello world!',
       "The result of reading the Blob's URL should be the Blob's contents");
-}), 'reading a Blob URL in an unconstrained iframe');
+    });
+}, 'reading a Blob URL in an unconstrained iframe');
 
-promise_test(t => readBlobFromUrl(t, '#sandboxed-iframe').then(data => {
-  assert_true(data.blobUrl.startsWith('blob:'),
-      "The Blob's URL should use the blob: scheme");
-  assert_equals(data.text, 'Hello world!',
-      "The result of reading the Blob's URL should be the Blob's contents");
-}), 'reading a Blob URL in a sandboxed iframe without the same-origin flag');
+promise_test(function(t) { 
+    return readBlobFromUrl(t, '#sandboxed-iframe').then(function(data) {
+      assert_true(data.blobUrl.startsWith('blob:'),
+          "The Blob's URL should use the blob: scheme");
+      assert_equals(data.text, 'Hello world!',
+          "The result of reading the Blob's URL should be the Blob's contents");
+    });
+}, 'reading a Blob URL in a sandboxed iframe without the same-origin flag');
 
 </script>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset=utf-8>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" charset="utf-8" />
 <title>Blob constructor</title>
 <link rel=help href="http://dev.w3.org/2006/webapi/FileAPI/#constructorBlob">
 <link rel=help href="https://heycam.github.io/webidl/#es-union">
@@ -64,7 +65,7 @@ test(function() {
     }, "Should throw for argument " + format_value(arg) + ".");
   });
 }, "Passing non-objects, Dates and RegExps for blobParts should throw a TypeError.");
-
+/*
 test_blob(function() {
   return new Blob({
     [Symbol.iterator]: Array.prototype[Symbol.iterator],
@@ -85,6 +86,7 @@ test_blob(function() {
   type: "",
   desc: "A plain object with @@iterator and a length property should be treated as a sequence for the blobParts argument."
 });
+*/
 test_blob(function() {
   return new Blob(new String("xyz"));
 }, {
@@ -105,6 +107,7 @@ var test_error = {
   message: "test error",
 };
 
+/*
 test(function() {
   var obj = {
     [Symbol.iterator]: Array.prototype[Symbol.iterator],
@@ -114,7 +117,7 @@ test(function() {
     new Blob(obj);
   });
 }, "The length getter should be invoked and any exceptions should be propagated.");
-
+*/
 test(function() {
   var element = document.createElement("div");
   element.appendChild(document.createElement("div"));
@@ -128,6 +131,7 @@ test(function() {
   });
 }, "A platform object that supports indexed properties should be treated as a sequence for the blobParts argument (overwritten 'length'.)");
 
+/*
 test(function() {
   assert_throws(test_error, function() {
     var obj = {
@@ -147,7 +151,6 @@ test(function() {
     new Blob(obj);
   });
 }, "ToUint32 should be applied to the length and any exceptions should be propagated.");
-
 test(function() {
   var received = [];
   var obj = {
@@ -197,6 +200,7 @@ test(function() {
   ]);
 }, "Getters and value conversions should happen in order until an exception is thrown.");
 
+*/
 // XXX should add tests edge cases of ToLength(length)
 
 test(function() {

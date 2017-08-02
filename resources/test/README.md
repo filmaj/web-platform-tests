@@ -1,6 +1,6 @@
 # `testharness.js` test suite
 
-The test suite for the `testharness.js` testing framework.
+The test suite for the `testharness.js` and `idlharness.js` testing frameworks.
 
 ## Executing Tests
 

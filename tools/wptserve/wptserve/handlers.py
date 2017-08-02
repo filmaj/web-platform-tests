@@ -134,6 +134,7 @@ class FileHandler(object):
             #This is probably racy with some other process trying to change the file
             file_size = os.stat(path).st_size
             response.headers.update(self.get_headers(request, path))
+            response.headers.set("Content-Length", file_size)
             if "Range" in request.headers:
                 try:
                     byte_ranges = RangeParser()(request.headers['Range'], file_size)

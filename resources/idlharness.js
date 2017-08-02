@@ -1250,7 +1250,8 @@ IdlInterface.prototype.test_self = function()
             // OK now actually check the aliases...
             var alias;
             if (exposed_in(exposure_set(this, this.exposureSet)) && 'document' in self) {
-                for (alias of aliases) {
+                //for (alias of aliases) {
+                aliases.forEach(function(alias) {
                     assert_true(alias in self, alias + " should exist");
                     assert_equals(self[alias], self[this.name], "self." + alias + " should be the same value as self." + this.name);
                     var desc = Object.getOwnPropertyDescriptor(self, alias);
@@ -1260,11 +1261,12 @@ IdlInterface.prototype.test_self = function()
                     assert_true(desc.configurable, alias + " should be configurable");
                     assert_false('get' in desc, alias + " should not have a getter");
                     assert_false('set' in desc, alias + " should not have a setter");
-                }
+                });
             } else {
-                for (alias of aliases) {
+                //for (alias of aliases) {
+                aliases.forEach(function(alias) {
                     assert_false(alias in self, alias + " should not exist");
-                }
+                });
             }
 
         }.bind(this), this.name + " interface: legacy window alias");
